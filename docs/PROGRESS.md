@@ -44,3 +44,23 @@ Brief: `JHJportfolio_MASTERPROMPT.md` (git-ignored: private brief, not published
   "How I work" after the principles, "Released … on GitHub", "Experience & milestones", private repo name removed from
   public files. Playwright 39/39 after the fixes.
 - Next: create `stredevirad/portfolio`, enable Pages (Actions), push, watch the run, production smoke + Lighthouse.
+
+## Phase 6 (part 2) — Ship ✅ (2026-11-21)
+- Repo `stredevirad/portfolio` (public) created and pushed; Pages source = GitHub Actions; `deploy.yml` builds, checks the
+  JS budget, runs Playwright, then deploys. Description, homepage URL and 10 topics set. No other repo touched.
+- Live: https://stredevirad.github.io/portfolio/ — CI runs green (latest: perf commit `4d5dffe`).
+- First production Lighthouse (mobile): home 89 (TBT 380 ms). Fix in `4d5dffe`: below-the-fold animation setup deferred to
+  idle, slimmer covers, shorter preloader, + a reel-pin test (suite is now 40 tests).
+- Production after the fix (mobile, Perf/A11y/BP/SEO): home 95/100/100/100 (LCP 1.4 s, CLS 0, TBT 180 ms),
+  /work/aegis/ 99/100/100/100, /resume/ 100/100/100/100. Reports in `docs/lighthouse/production-*`.
+- Playwright against production (`BASE_URL=https://stredevirad.github.io/portfolio/`): 40/40 passed.
+- Not done: pinning the repo (GitHub has no API for profile pins → owner does it in the UI); backup deploy on
+  Cloudflare/Vercel (needs an account login — optional); custom domain (paid, no spend approved; see OPEN_QUESTIONS #15).
+- Skill `deploy-checklist` not installed → applied by hand.
+
+## Phase 7 — Docs and memory ✅ (2026-11-21)
+- `README.md` (hero screenshot, live link, stack, dev commands, content editing, deploys) and `CLAUDE.md` (rules, hard
+  exclusions, file map, tokens, motion rules, perf budget, deploys) are current. Skill `documentation` not installed → by hand.
+- `docs/PORTFOLIO_FACTS.md` stays the single source of truth; `docs/OPEN_QUESTIONS.md` lists 15 items for Joshua.
+- Project memory saved in Claude Code's project memory (`~/.claude/projects/-mnt-d-JHJportfolio/memory/`), not the global file.
+- Next (optional): answer OPEN_QUESTIONS, pin the repo, update resume/LinkedIn links to the live URL.
