@@ -34,9 +34,11 @@ export function scrollKit(): ScrollKit | null {
 }
 
 /**
- * Resolves when the scroll kit is wanted: on idle after hydration, or on the first user input.
+ * Resolves when the scroll kit is wanted: on the first user input, or on idle after hydration — and, on a first
+ * visit with the preloader, only after the preloader has finished (registering ScrollTrigger forces a full-page
+ * layout, which must not land while the hero name is still settling; that is the LCP element).
  * Callers that only need it eventually (section setups, smooth scroll, velocity effects) wait on this,
- * so the chunk never competes with hydration.
+ * so the chunk never competes with hydration or the intro.
  */
 let primed: Promise<ScrollKit> | null = null;
 export function primeScrollKit(): Promise<ScrollKit> {
@@ -51,7 +53,11 @@ export function primeScrollKit(): Promise<ScrollKit> {
       resolve();
     };
     events.forEach((e) => window.addEventListener(e, go, { capture: true, passive: true, once: true }));
-    cancelIdle = whenIdle(go, 1500);
+    const idle = () => (cancelIdle = whenIdle(go, 1500));
+    if (document.documentElement.hasAttribute('data-preload')) {
+      const cap = window.setTimeout(idle, 6000); // never wait forever on the preloader
+      window.addEventListener('jhj:preloaded', () => (window.clearTimeout(cap), idle()), { once: true });
+    } else idle();
   }).then(loadScrollKit);
   return primed;
 }
