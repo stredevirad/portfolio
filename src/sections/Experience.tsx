@@ -31,6 +31,7 @@ export function Experience() {
       });
     },
     [prefs.motion, prefs.recruiter],
+    { defer: true },
   );
 
   return (

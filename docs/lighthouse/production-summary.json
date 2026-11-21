@@ -1,0 +1,36 @@
+{
+  "base": "https://stredevirad.github.io/portfolio/",
+  "date": "2026-11-21T02:31:09.311Z",
+  "results": [
+    {
+      "page": "/",
+      "performance": 89,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "LCP": "1.0 s",
+      "CLS": "0",
+      "TBT": "380 ms"
+    },
+    {
+      "page": "/work/aegis/",
+      "performance": 93,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "LCP": "0.9 s",
+      "CLS": "0",
+      "TBT": "330 ms"
+    },
+    {
+      "page": "/resume/",
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "LCP": "0.9 s",
+      "CLS": "0",
+      "TBT": "20 ms"
+    }
+  ]
+}

@@ -56,7 +56,7 @@ export function ProjectIndex() {
   const [filter, setFilter] = useState<FilterId>('all');
   const flip = useRef<FlipState | null>(null);
 
-  useGsap(ref, () => revealIn(ref.current), [prefs.motion]);
+  useGsap(ref, () => revealIn(ref.current), [prefs.motion], { defer: true });
 
   const choose = (f: FilterId) => {
     if (f === filter) return;

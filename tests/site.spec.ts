@@ -111,6 +111,17 @@ test.describe('modes', () => {
     await ctx.close();
   });
 
+  test('work reel pins and scrolls horizontally on desktop with full motion', async ({ page }) => {
+    await page.addInitScript(() => sessionStorage.setItem('jhj:visited', '1'));
+    await page.goto('');
+    await expect(page.locator('#work')).toHaveAttribute('data-pinned', '1', { timeout: 6000 });
+    const before = await page.locator('.reel__track').evaluate((el) => getComputedStyle(el).transform);
+    await page.locator('#work').evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY + 900));
+    await page.waitForTimeout(1500);
+    const after = await page.locator('.reel__track').evaluate((el) => getComputedStyle(el).transform);
+    expect(after).not.toBe(before);
+  });
+
   test('preloader runs on the first visit only', async ({ page }) => {
     await page.goto('');
     await expect(page.locator('html')).toHaveAttribute('data-preload', '1');

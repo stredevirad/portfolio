@@ -34,6 +34,7 @@ export function Achievements() {
       });
     },
     [prefs.motion, prefs.recruiter],
+    { defer: true },
   );
 
   return (

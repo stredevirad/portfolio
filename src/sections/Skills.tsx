@@ -14,7 +14,7 @@ export function Skills() {
   const ref = useRef<HTMLElement>(null);
   const prefs = usePrefs();
   const [active, setActive] = useState<SkillId | null>(null);
-  useGsap(ref, () => revealIn(ref.current), [prefs.motion]);
+  useGsap(ref, () => revealIn(ref.current), [prefs.motion], { defer: true });
 
   const used = active ? new Set(projectsForSkill(active).map((p) => p.slug)) : null;
   const pick = (id: SkillId | null) => {

@@ -36,7 +36,7 @@ export function Preloader() {
             window.dispatchEvent(new Event('jhj:preloaded'));
           },
         })
-        .to(root.current, { clipPath: 'inset(0% 0% 100% 0%)', duration: motion.dur.l, ease: 'power4.inOut' });
+        .to(root.current, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.8, ease: 'power4.inOut' });
     };
 
     const tl = gsap.timeline();

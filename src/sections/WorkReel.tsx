@@ -129,6 +129,7 @@ export function WorkReel() {
       };
     },
     [prefs.motion, prefs.recruiter],
+    { defer: true },
   );
 
   return (

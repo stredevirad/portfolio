@@ -52,7 +52,7 @@ export function Cover({ spec, title, className }: { spec: CoverSpec; title: stri
   const rand = rng(spec.seed);
   const els: ReactNode[] = [];
   // Noise layer common to all motifs: drifting dots.
-  for (let i = 0; i < 90; i++) {
+  for (let i = 0; i < 36; i++) {
     els.push(<circle key={`n${i}`} cx={r1(rand() * W)} cy={r1(rand() * H)} r={r1(0.8 + rand() * 1.6)} fill="currentColor" opacity={r1(0.08 + rand() * 0.25)} />);
   }
   switch (spec.motif) {
@@ -92,10 +92,10 @@ export function Cover({ spec, title, className }: { spec: CoverSpec; title: stri
       break;
     }
     case 'grid': {
-      for (let x = 0; x < 16; x++)
-        for (let y = 0; y < 10; y++) {
+      for (let x = 0; x < 12; x++)
+        for (let y = 0; y < 7; y++) {
           const v = rand();
-          els.push(<rect key={`g${x}-${y}`} x={160 + x * 30} y={100 + y * 30} width={24} height={24} rx={3} fill="currentColor" opacity={r1(v * v * 0.6)} className={v > 0.93 ? 'cv-accent' : undefined} />);
+          els.push(<rect key={`g${x}-${y}`} x={160 + x * 40} y={100 + y * 42} width={32} height={32} rx={4} fill="currentColor" opacity={r1(v * v * 0.6)} className={v > 0.93 ? 'cv-accent' : undefined} />);
         }
       break;
     }

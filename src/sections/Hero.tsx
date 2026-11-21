@@ -19,7 +19,7 @@ function HeroFallback() {
     const H = 1000;
     const X = (x: number) => Math.round((0.42 + 0.55 * x) * W);
     const Y = (y: number) => Math.round((0.1 + 0.56 * y) * H);
-    const dots = Array.from({ length: 140 }, () => {
+    const dots = Array.from({ length: 80 }, () => {
       const x = rand();
       return { x: Math.round(x * W * 0.9), y: Math.round(rand() * H), r: Math.round((0.8 + rand() * 1.8) * 10) / 10, o: Math.round((0.12 + (1 - x) * 0.3) * 100) / 100 };
     });

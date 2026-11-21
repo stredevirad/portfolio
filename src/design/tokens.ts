@@ -9,7 +9,7 @@ export const motion = {
   },
   stagger: { chars: 0.018, words: 0.04, lines: 0.08, cards: 0.12 },
   /** Preloader: never shorter (avoids a flash) and never longer (protects LCP / Speed Index). */
-  preloader: { min: 0.9, max: 1.4 },
+  preloader: { min: 0.75, max: 1.2 },
 } as const;
 
 export const breakpoints = { sm: 480, md: 768, lg: 1024, xl: 1440 } as const;

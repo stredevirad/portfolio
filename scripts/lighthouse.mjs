@@ -2,7 +2,7 @@
 // Usage: node scripts/lighthouse.mjs [url] [label]
 //   no url → serves dist/ locally (GitHub-Pages-like server) and audits /portfolio/
 // Reports: docs/lighthouse/<label>-<page>.report.{html,json}; prints the four category scores.
-import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import lighthouse from 'lighthouse';
@@ -21,13 +21,18 @@ if (!base) {
 const pages = (process.env.LH_PAGES ?? ',work/aegis/').split(',');
 await mkdir('docs/lighthouse', { recursive: true });
 
+
+const ROOT = process.cwd();
+const OUT = path.join(ROOT, 'docs/lighthouse');
+process.chdir(os.tmpdir());
 const chrome = await chromeLauncher.launch({
   chromePath: process.env.CHROME_PATH ?? chromium.executablePath(),
-  // Under WSL, chrome-launcher assumes a Windows Chrome and rewrites the profile path to a Windows UNC path;
-  // so it gets no profile dir (false) and the Linux Chromium gets an absolute Linux one via the flag instead.
-  chromeFlags: ['--headless=new', '--no-sandbox', '--disable-gpu', `--user-data-dir=${await mkdtemp(path.join(os.tmpdir(), 'lh-'))}`],
-  userDataDir: false,
+  chromeFlags: ['--headless=new', '--no-sandbox', '--disable-gpu'],
+  // Under WSL, chrome-launcher assumes a Windows Chrome and rewrites the profile path to a UNC path, which a Linux
+  // Chromium then creates relative to the cwd — so the cwd is moved to a temp dir while Chrome runs (see below).
+  userDataDir: await mkdtemp(path.join(os.tmpdir(), 'lh-')),
 });
+process.chdir(ROOT);
 const summary = [];
 try {
   for (const p of pages) {
@@ -42,8 +47,8 @@ try {
     if (!result) throw new Error(`no result for ${url}`);
     const name = `${label}-${p.replace(/\//g, '_').replace(/_$/, '') || 'home'}`;
     const [html, json] = result.report;
-    await writeFile(`docs/lighthouse/${name}.report.html`, html);
-    await writeFile(`docs/lighthouse/${name}.report.json`, json);
+    await writeFile(path.join(OUT, `${name}.report.html`), html);
+    await writeFile(path.join(OUT, `${name}.report.json`), json);
     const c = result.lhr.categories;
     const a = result.lhr.audits;
     const row = {
@@ -59,7 +64,16 @@ try {
     summary.push(row);
     console.log(JSON.stringify(row));
   }
-  await writeFile(`docs/lighthouse/${label}-summary.json`, JSON.stringify({ base, date: new Date().toISOString(), results: summary }, null, 2) + '\n');
+  // Merge with earlier runs of the same label (pages can be audited one at a time on low-memory machines).
+  const file = path.join(OUT, `${label}-summary.json`);
+  let prev = [];
+  try {
+    prev = JSON.parse(await readFile(file, 'utf8')).results ?? [];
+  } catch {
+    /* first run */
+  }
+  const merged = [...prev.filter((r) => !summary.some((s) => s.page === r.page)), ...summary];
+  await writeFile(file, JSON.stringify({ base, date: new Date().toISOString(), results: merged }, null, 2) + '\n');
 } finally {
   await chrome.kill();
   server?.close();
