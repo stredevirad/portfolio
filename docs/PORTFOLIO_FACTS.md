@@ -144,3 +144,19 @@ See [`COUNCIL_PHASE0.md`](COUNCIL_PHASE0.md). Amendments folded in here (they ov
 9. **Status labels:** Tern = "In progress · no public repo yet"; UrbanTherm = "NeST Digital GIS Mapathon — 4th place" only (no description invented).
 10. **Credits:** KeralaFloodBench is "built on GISclaw (open source, AGPL-3.0)" with a link to `github.com/geumjin99/GISclaw`; Cold Chain Handshake credits "team of four" (teammate names → OPEN_QUESTIONS).
 11. **Production build ships without source maps.** The easter-egg nickname is in a lazy JS chunk and lightly encoded; treat it as discoverable, never as secret.
+
+## Case-study details (verified 2026-11-21 against the repo clones)
+
+Smaller numbers used inside case studies, each checked against the source file before publishing.
+
+| Detail on the site | Source |
+|---|---|
+| Grammar Tax: Qwen2.5 vocabulary 151,936 tokens; mask cost median ~27 ms per token, "about as much as running the 0.5B model itself" | `grammar-tax/README.md` L7–8, L46 |
+| Grammar Tax: median mask cost 27.3 ms → 18.5 ms; per-grammar speed-up 1.03× to 1.89×; 17,167 random-walk steps bit-identical | `grammar-tax/README.md` L53–58 |
+| Grammar Tax: patches 0001–0003 = +34/−14, +12/−2, +26/−7 lines → "+72 / −23" | `grammar-tax/README.md` L72–76 |
+| Grammar Tax: measured on a 4-vCPU VM | `grammar-tax/README.md` L128 |
+| Deep Learning Tutor: Grad-CAM heat on the digit's pixels a median 2.7× more than chance on 300 MNIST validation digits | `DeepLearningTutor/README.md` L209–210 |
+| Deep Learning Tutor: Iris has 22 test rows; one flower is 4.5 points | `DeepLearningTutor/README.md` L199, L302 |
+| KeralaFloodBench: benchmark files frozen with SHA-256 hashes; JRC Global Surface Water (Pekel et al. 2016) | `kerala-flood-gis-agent/REPORT.md` L84, L41 |
+| Cold Chain Handshake: escalation worker → supervisor → pharmacist | `ColdChainHandshake/README.md` L66–82 |
+| WebRank: scalability benchmarked up to the 5-million-edge web-Google graph | `D:\DM course project\README.md` L7–8 |

@@ -12,3 +12,7 @@ playwright-report/
 /tmp/
 JHJportfolio_MASTERPROMPT.md
 dist-ssr/
+
+# Chrome profiles accidentally created by chrome-launcher under WSL
+*wsl.localhost*
+/docs/lighthouse/*.tmp

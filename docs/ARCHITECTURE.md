@@ -93,7 +93,8 @@ Budget (enforced by `scripts/size.mjs` in CI): initial JS ≤ 200 KB gzip, exclu
 - DPR capped at 1.5, render loop paused when the hero is offscreen (IntersectionObserver) or the tab is hidden.
 - Fonts: 3 variable WOFF2 files (latin subset), display face preloaded, `font-display: swap`, metric-matched fallbacks.
 - Images: AVIF + WebP with explicit width/height, `loading="lazy"` below the fold.
-- Lazy chunks: case study, command palette, terminal, easter egg, three.js hero.
+- Lazy chunks: command palette, terminal, easter egg, three.js hero. Case studies are in the main bundle on purpose:
+  they are prerendered and must hydrate without a Suspense waterfall (their data is in `projects.ts` anyway).
 
 ## 6. Build & deploy pipeline
 
@@ -105,10 +106,11 @@ npm run build
   ├─ vite build --ssr src/entry-server  → dist-ssr/
   └─ node scripts/postbuild.mjs
        ├─ prerender routes → dist/**/index.html + 404.html (title/meta/canonical/OG per route)
-       ├─ sitemap.xml, robots.txt, llms.txt, resume.json
+       ├─ sitemap.xml, robots.txt, llms.txt
        ├─ OG image 1200×630 (Playwright screenshot of an HTML template from content data)
        └─ resume PDF (Playwright page.pdf() of /resume, real selectable text)
-npx playwright test                     smoke, toggles, deep links, PDF, axe
+npm run size                            initial JS ≤ 200 KB gzip
+npx playwright test                     smoke, toggles, deep links, PDF, axe (served by scripts/serve.mjs, a Pages-like server)
 → actions/upload-pages-artifact → actions/deploy-pages
 ```
 Workflow: `.github/workflows/deploy.yml` (push to `main`). Pages source: GitHub Actions.

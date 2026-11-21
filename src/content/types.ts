@@ -46,6 +46,8 @@ export interface DiagramNode {
   y: number;
   w?: number;
   kind?: 'input' | 'core' | 'store' | 'model' | 'output';
+  /** Highlighted as the part Joshua owned (team projects). */
+  owned?: boolean;
 }
 
 export interface DiagramEdge {

@@ -313,8 +313,8 @@ export const projects: Project[] = [
         summary:
           'A shipment is dispatched and paired to a logger by QR code. Simulated temperature readings are buffered in Room and synced to Supabase. A breach detector escalates alerts and can quarantine the shipment. Readings are hash-chained, and at delivery the handover step checks signatures and the chain to give a PASS or FAIL verdict. Highlighted nodes are the layer I owned.',
         nodes: [
-          { id: 'dispatch', label: 'Dispatch', sub: 'create shipment', x: 20, y: 30, kind: 'input' },
-          { id: 'pair', label: 'QR pairing', sub: 'logger ↔ shipment', x: 270, y: 30 },
+          { id: 'dispatch', label: 'Dispatch', sub: 'create shipment', x: 20, y: 30, kind: 'input', owned: true },
+          { id: 'pair', label: 'QR pairing', sub: 'logger ↔ shipment', x: 270, y: 30, owned: true },
           { id: 'stream', label: 'Temperature stream', sub: 'simulated logger', x: 520, y: 30, kind: 'input' },
           { id: 'room', label: 'Room', sub: 'offline-first buffer', x: 770, y: 30, kind: 'store' },
           { id: 'sync', label: 'Sync', sub: 'when the network returns', x: 770, y: 175 },
@@ -323,8 +323,8 @@ export const projects: Project[] = [
           { id: 'esc', label: 'Alert escalation', sub: 'worker → supervisor → pharmacist', x: 270, y: 175, kind: 'core' },
           { id: 'quar', label: 'Quarantine', sub: 'hold the shipment', x: 20, y: 175, kind: 'output' },
           { id: 'hash', label: 'Hash chain', sub: 'tamper-evident log', x: 520, y: 320, kind: 'core' },
-          { id: 'hand', label: 'Handover', sub: 'signatures · QR', x: 270, y: 320, kind: 'core' },
-          { id: 'verdict', label: 'PASS / FAIL', sub: 'at delivery', x: 20, y: 320, kind: 'output' },
+          { id: 'hand', label: 'Handover', sub: 'signatures · QR', x: 270, y: 320, kind: 'core', owned: true },
+          { id: 'verdict', label: 'PASS / FAIL', sub: 'at delivery', x: 20, y: 320, kind: 'output', owned: true },
         ],
         edges: [
           { from: 'dispatch', to: 'pair' },

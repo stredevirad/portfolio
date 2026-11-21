@@ -1,0 +1,26 @@
+{
+  "base": "http://127.0.0.1:36787/portfolio/",
+  "date": "2026-11-21T02:09:56.154Z",
+  "results": [
+    {
+      "page": "/",
+      "performance": 96,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "LCP": "0.9 s",
+      "CLS": "0.004",
+      "TBT": "180 ms"
+    },
+    {
+      "page": "/work/aegis/",
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "LCP": "0.8 s",
+      "CLS": "0",
+      "TBT": "90 ms"
+    }
+  ]
+}
