@@ -79,4 +79,5 @@ Brief: `JHJportfolio_MASTERPROMPT.md` (git-ignored: private brief, not published
   `docs/lighthouse/RUNS-2026-11-21.md`. Playwright: 40/40 locally and 40/40 against production.
 - Lesson: compare Lighthouse runs only at a similar `benchmarkIndex` (one run at 903 vs ~2,700 scored home 71) and A/B
   locally before trusting a single production number.
-- Next: the remaining home TBT is style/layout work from the large DOM, not JS size — see RUNS file.
+- Next: the remaining home TBT is mostly style/layout and rendering work (large DOM, preloader + intro animation), not
+  JS size — see the main-thread breakdown in `docs/lighthouse/production-home.report.html`.
