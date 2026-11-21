@@ -91,4 +91,6 @@ Targets: LCP < 2.5 s, CLS < 0.05 (mobile). Lighthouse mobile: Perf ≥ 90, A11y 
 
 Push to `main` → `.github/workflows/deploy.yml`: `npm ci` → Chromium → `npm run build` → `npm run size` → Playwright →
 `upload-pages-artifact` → `deploy-pages`. Pages source = GitHub Actions. Vite `base` is `/portfolio/` and must match the repo name.
-Never push to, rename or modify any other repo of the owner (especially `stredevirad.github.io` and older portfolios).
+Never push to, rename or modify any other repo of the owner without an explicit request.
+`stredevirad/stredevirad.github.io` (created 2026-11-21 at the owner's request) only redirects the root URL to `/portfolio/`
+(meta refresh + JS + fallback link + canonical). Keep it that way; if the portfolio's repo name/base ever changes, update it too.

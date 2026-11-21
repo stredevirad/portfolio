@@ -26,5 +26,5 @@ Nothing here is on the live site as a claim.
 11. **Naming your internship supervisor** — Dr. Sudheep Elayidom is named per your fact sheet; confirm he's fine with it.
 12. **AI assistance on Deep Learning Tutor and Cold Chain Handshake** — those repos make no statement, so the site makes none. If agents wrote much of that code too, say so and I'll add the same disclosure line for consistency.
 13. **Resume / LinkedIn / READMEs** — update them to the numbers on the site (Aegis 366/137/81, v1.0.1) so recruiters cross-checking see the same facts.
-14. **Old root site** (`stredevirad.github.io`) — left untouched as instructed. If someone trims the URL to the root they land there; consider adding a link to `/portfolio/` from it yourself.
+14. ~~**Old root site** (`stredevirad.github.io`)~~ → **Resolved 2026-11-21.** The repo didn't actually exist (root URL was a 404), so there was no old site or `/certificates/` folder to keep. On Joshua's request a new public `stredevirad/stredevirad.github.io` now redirects the root to `/portfolio/`. Still open: send the certificate PDFs if they should live under `/certificates/`.
 15. **Custom domain** (optional, paid) — would give a URL with your name without touching the old site. Not done (no spend approved).
