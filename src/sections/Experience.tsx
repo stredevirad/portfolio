@@ -39,7 +39,7 @@ export function Experience() {
         <div className="section__head section__head--split">
           <div style={{ display: 'grid', gap: 'var(--space-m)' }}>
             <p className="eyebrow" data-reveal>
-              04 — Experience
+              04 — Experience &amp; milestones
             </p>
             <h2 className="h-section" id="exp-title" data-split data-vel>
               What I’ve done so far.

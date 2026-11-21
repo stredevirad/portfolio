@@ -116,6 +116,8 @@ export interface Project {
   skills: SkillId[];
   repo?: string;
   cover: CoverSpec;
+  /** Tighter crop for the work-reel card (falls back to `image`). */
+  cardImage?: ProjectImage;
   image?: ProjectImage;
   gallery?: ProjectImage[];
   caseStudy?: CaseStudy;

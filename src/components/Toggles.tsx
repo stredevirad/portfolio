@@ -96,7 +96,7 @@ export function Toggles({ variant = 'bar' }: { variant?: 'bar' | 'menu' }) {
     </button>
   );
   const recruiterBtn = (
-    <button type="button" className="recruiter-btn" aria-pressed={p.recruiter} onClick={() => setRecruiter(!p.recruiter)} data-magnetic>
+    <button type="button" className="recruiter-btn" aria-pressed={p.recruiter} onClick={() => setRecruiter(!p.recruiter)} title="A plain, fast, printable résumé view of this site" data-magnetic>
       <span className="switch" aria-hidden="true" />
       Recruiter mode
     </button>

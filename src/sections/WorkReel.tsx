@@ -25,8 +25,8 @@ function FlagshipCard({ p, index }: { p: Project; index: number }) {
       <div className="pcard__inner" data-tilt>
         <div className="pcard__media" data-flip-id={`media-${p.slug}`}>
           {p.award && <span className="tag tag--award pcard__badge">{p.award}</span>}
-          {p.image ? (
-            <Picture name={p.image.name} alt={p.image.alt} sizes="(min-width: 1024px) 38vw, 92vw" />
+          {(p.cardImage ?? p.image) ? (
+            <Picture name={(p.cardImage ?? p.image)!.name} alt={(p.cardImage ?? p.image)!.alt} sizes="(min-width: 1024px) 38vw, 92vw" />
           ) : (
             <Cover spec={p.cover} title={p.title} />
           )}

@@ -9,6 +9,15 @@ export const images = {
       1366
     ]
   },
+  "aegis-card": {
+    "width": 1280,
+    "height": 800,
+    "widths": [
+      480,
+      960,
+      1280
+    ]
+  },
   "aegis-verdict": {
     "width": 1366,
     "height": 900,

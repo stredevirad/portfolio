@@ -5,7 +5,7 @@ export const experience: ExperienceItem[] = [
   {
     id: 'kerala',
     kind: 'milestone',
-    title: 'Published KeralaFloodBench',
+    title: 'Released KeralaFloodBench on GitHub',
     org: 'Independent research',
     period: 'Nov 2026',
     start: '2026-11-18',

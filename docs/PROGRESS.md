@@ -37,3 +37,10 @@ Brief: `JHJportfolio_MASTERPROMPT.md` (git-ignored: private brief, not published
 - Skills `frontend-design`, `design-system`, `ux-copy`, `tech-resume-optimizer`, `accessibility-review`, `design-critique`,
   `testing-strategy`, `code-review` are not installed → applied by hand (screenshots reviewed at 390/768/1440, both themes).
 - Next: Phase 6 — final council review, create `stredevirad/portfolio`, push, Pages deploy, production smoke + Lighthouse.
+
+## Phase 6 (part 1) — Final council ✅ (2026-11-21)
+- `docs/COUNCIL_FINAL.md`: 5 advisors + 5 peer reviews + chairman. Applied: Aegis claim at equal weight with the README's
+  own caveat, hero proof strip + smaller name (fits 1440×900), WebGL snap plays once on load, readable Aegis card crop,
+  "How I work" after the principles, "Released … on GitHub", "Experience & milestones", private repo name removed from
+  public files. Playwright 39/39 after the fixes.
+- Next: create `stredevirad/portfolio`, enable Pages (Actions), push, watch the run, production smoke + Lighthouse.

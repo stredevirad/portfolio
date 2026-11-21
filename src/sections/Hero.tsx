@@ -6,6 +6,8 @@ import { fpsProbe, hasFinePointer, isLowEnd, webglAvailable, whenIdle } from '..
 import { ensureGsap } from '../lib/gsap';
 import { withBase } from '../lib/base';
 import { copyText } from '../lib/clipboard';
+import { Link } from '../lib/router';
+import { scrollTo } from '../lib/smooth';
 import { IconArrowUpRight, IconCopy, IconDownload } from '../components/Icons';
 
 /** Static, art-directed fallback: noise on the left converging into the evidence graph on the right. */
@@ -15,8 +17,8 @@ function HeroFallback() {
     const rand = rng(31);
     const W = 1600;
     const H = 1000;
-    const X = (x: number) => Math.round((0.4 + 0.56 * x) * W);
-    const Y = (y: number) => Math.round((0.12 + 0.7 * y) * H);
+    const X = (x: number) => Math.round((0.42 + 0.55 * x) * W);
+    const Y = (y: number) => Math.round((0.1 + 0.56 * y) * H);
     const dots = Array.from({ length: 140 }, () => {
       const x = rand();
       return { x: Math.round(x * W * 0.9), y: Math.round(rand() * H), r: Math.round((0.8 + rand() * 1.8) * 10) / 10, o: Math.round((0.12 + (1 - x) * 0.3) * 100) / 100 };
@@ -159,7 +161,7 @@ export function Hero() {
       <div className="hero__inner wrap">
         <p className="hero__meta" data-intro>
           <span>{site.role}</span>
-          <span>B.Tech AI &amp; Data Science, {site.schoolShort} ({site.years})</span>
+          <span>B.Tech AI &amp; Data Science, {site.schoolShort} · class of 2028</span>
           <span>{site.locationShort}, India</span>
         </p>
         <h1 className="hero__name" id="hero-name" ref={nameRef} aria-label={site.name}>
@@ -200,8 +202,25 @@ export function Hero() {
               </button>
             </div>
           </div>
+          <ul className="hero__proof" role="list" aria-label="Highlights" data-intro>
+            <li>
+              <Link to="/work/cold-chain-handshake/" data-cursor="view">
+                <b>1st place</b> THROTTLE hackathon
+              </Link>
+            </li>
+            <li>
+              <a href={withBase('/#achievements')} onClick={(e) => (e.preventDefault(), scrollTo('achievements'))}>
+                <b>Special Jury Award</b> V-Guard Big Idea 2026 · 17 finalists of 1,000+
+              </a>
+            </li>
+            <li>
+              <Link to="/work/deep-learning-tutor/" data-cursor="view">
+                <b>Research Intern</b> CUSAT, 2026
+              </Link>
+            </li>
+          </ul>
           <p className="hero__scroll mono" aria-hidden="true">
-            <i /> Scroll for evidence
+            <i /> Scroll for the work
           </p>
         </div>
       </div>

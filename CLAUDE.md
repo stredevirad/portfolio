@@ -14,7 +14,7 @@ Read order for any new session: this file → `docs/PROGRESS.md` → `docs/PORTF
    - AtomQuest, ExaThon / VoltProof, gIGNITE and TELIPORT are unfinished or dropped. Not achievements, not shown.
    - The NPTEL Modern C++ top-2 % result is a friend's, not Joshua's. Exclude it.
    - C++ is **not** a headline skill. Python leads every skills list. C++ may appear only in the Grammar Tax case-study stack.
-   - `forge-mini` is a private repo: never link or describe it.
+   - One private repo (named only in the owner's private brief) must never be linked, named or described.
    - No phone number, no street address.
    - The easter-egg nickname appears only inside the hidden unlock (below) — never in visible copy, titles, meta,
      sitemap, the resume PDF or the README.

@@ -21,10 +21,6 @@ export function Manifesto() {
           <p className="lede" data-reveal>
             {site.intro}
           </p>
-          <aside className="howiwork" data-reveal aria-labelledby="how-title">
-            <h3 id="how-title">How I work</h3>
-            <p>{site.howIWork}</p>
-          </aside>
         </div>
         <ol className="principles" role="list">
           {principles.map((p) => (
@@ -35,6 +31,10 @@ export function Manifesto() {
             </li>
           ))}
         </ol>
+        <aside className="howiwork" data-reveal aria-labelledby="how-title">
+            <h3 id="how-title">How I work</h3>
+            <p>{site.howIWork}</p>
+          </aside>
       </div>
     </section>
   );

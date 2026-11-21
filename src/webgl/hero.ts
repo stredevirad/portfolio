@@ -196,10 +196,10 @@ export function mountHero(canvas: HTMLCanvasElement, container: HTMLElement): He
     const aspect = w / Math.max(1, h);
     uniforms.uAspect.value = aspect;
     const wide = aspect > 1.1;
-    const x0 = wide ? 0.38 : 0.04;
+    const x0 = wide ? 0.42 : 0.04;
     const x1 = wide ? 0.97 : 0.96;
-    const y0 = wide ? 0.12 : 0.06;
-    const y1 = wide ? 0.82 : 0.5;
+    const y0 = wide ? 0.1 : 0.06;
+    const y1 = wide ? 0.64 : 0.5;
     const toWorld = (x: number, y: number): [number, number] => [(-1 + 2 * (x0 + (x1 - x0) * x)) * aspect, 1 - 2 * (y0 + (y1 - y0) * y)];
     const g = graphAttr.array as Float32Array;
     for (let i = 0; i < N; i++) {
@@ -276,7 +276,11 @@ export function mountHero(canvas: HTMLCanvasElement, container: HTMLElement): He
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     uniforms.uTime.value += dt;
-    uniforms.uProgress.value += (progressTarget - uniforms.uProgress.value) * Math.min(1, dt * 3);
+    // Signature moment, once on load: the noise snaps into the evidence graph, holds, then relaxes.
+    const t = uniforms.uTime.value;
+    const intro = t < 0.6 ? 0 : t < 1.8 ? (t - 0.6) / 1.2 : t < 3.4 ? 1 : t < 5 ? 1 - (t - 3.4) / 1.6 : 0;
+    const target = Math.max(progressTarget, 0.36 + intro * 0.62);
+    uniforms.uProgress.value += (target - uniforms.uProgress.value) * Math.min(1, dt * 3);
     uniforms.uPointerOn.value += (pointerTarget - uniforms.uPointerOn.value) * Math.min(1, dt * 4);
     renderer.render(scene, camera);
     raf = requestAnimationFrame(frame);
