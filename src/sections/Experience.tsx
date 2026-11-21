@@ -15,8 +15,8 @@ export function Experience() {
 
   useGsap(
     ref,
-    () => {
-      revealIn(ref.current);
+    (late) => {
+      revealIn(ref.current, late);
       if (!motionAllowed() || !ref.current || !line.current) return;
       const { gsap, ScrollTrigger } = ensureGsap();
       const list = ref.current.querySelector('.timeline');

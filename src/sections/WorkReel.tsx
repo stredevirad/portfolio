@@ -71,8 +71,8 @@ export function WorkReel() {
 
   useGsap(
     ref,
-    () => {
-      revealIn(ref.current);
+    (late) => {
+      revealIn(ref.current, late);
       if (!motionAllowed() || !ref.current || !track.current) return;
       const { gsap } = ensureGsap();
       const section = ref.current;

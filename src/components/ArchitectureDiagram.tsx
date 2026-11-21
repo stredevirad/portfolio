@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import type { Diagram } from '../content/types';
 import { useGsap } from '../lib/hooks';
 import { ensureGsap } from '../lib/gsap';
+import { onScreen } from '../lib/anim';
 import { motionAllowed, usePrefs } from '../lib/prefs';
 
 const NODE_W = 228;
@@ -54,11 +55,11 @@ export function ArchitectureDiagram({ diagram, title }: { diagram: Diagram; titl
 
   useGsap(
     ref,
-    () => {
+    (late) => {
       if (!motionAllowed() || !ref.current) return;
       const { gsap } = ensureGsap();
       const svg = ref.current.querySelector('svg');
-      if (!svg) return;
+      if (!svg || (late && onScreen(svg))) return; // already drawn on screen: leave it
       const edges = svg.querySelectorAll<SVGPathElement>('.diagram__edge');
       edges.forEach((p) => {
         const len = p.getTotalLength();

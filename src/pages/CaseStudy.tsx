@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { caseStudies, projectBySlug } from '../content/projects';
 import { Link } from '../lib/router';
 import { useGsap, useIsoLayoutEffect } from '../lib/hooks';
-import { ensureGsap } from '../lib/gsap';
+import { scrollKit } from '../lib/gsap';
 import { revealIn } from '../lib/anim';
 import { usePrefs } from '../lib/prefs';
 import { takeFlip } from '../lib/transition';
@@ -18,7 +18,7 @@ export function CaseStudy({ slug }: { slug: string }) {
   const prefs = usePrefs();
   const p = projectBySlug(slug);
 
-  useGsap(ref, () => revealIn(ref.current), [prefs.motion, slug]);
+  useGsap(ref, (late) => revealIn(ref.current, late), [prefs.motion, slug]);
 
   // Shared-element hand-off from the work card (GSAP Flip).
   useIsoLayoutEffect(() => {
@@ -27,8 +27,9 @@ export function CaseStudy({ slug }: { slug: string }) {
     scrollTo(0, { immediate: true });
     const target = ref.current.querySelector(`[data-flip-id="media-${slug}"]`);
     if (!target) return;
-    const { Flip } = ensureGsap();
-    Flip.from(state, { targets: target, duration: 1.05, ease: 'expo.inOut', absolute: true, scale: true, zIndex: 60 });
+    const kit = scrollKit();
+    if (!kit) return;
+    kit.Flip.from(state, { targets: target, duration: 1.05, ease: 'expo.inOut', absolute: true, scale: true, zIndex: 60 });
   }, [slug]);
 
   if (!p || !p.caseStudy) return <NotFound />;

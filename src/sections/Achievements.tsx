@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { achievements, marqueeItems } from '../content/achievements';
 import { useGsap } from '../lib/hooks';
 import { ensureGsap } from '../lib/gsap';
-import { revealIn } from '../lib/anim';
+import { onScreen, revealIn } from '../lib/anim';
 import { motionAllowed, usePrefs } from '../lib/prefs';
 
 export function Achievements() {
@@ -12,11 +12,12 @@ export function Achievements() {
   // Counters animate only to the real values; the final value is already in the HTML.
   useGsap(
     ref,
-    () => {
-      revealIn(ref.current);
+    (late) => {
+      revealIn(ref.current, late);
       if (!motionAllowed() || !ref.current) return;
       const { gsap } = ensureGsap();
       ref.current.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
+        if (late && onScreen(el)) return; // already visible with its final value
         const end = Number(el.dataset.count);
         const num = el.querySelector<HTMLElement>('.award__num');
         if (!num || !Number.isFinite(end)) return;

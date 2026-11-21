@@ -1,7 +1,7 @@
 // Custom cursor (ring + dot) with contextual labels, magnetic targets and card tilt.
 // Fine pointers only, full motion only, never in recruiter mode.
 import { useEffect, useRef, useState } from 'react';
-import { ensureGsap } from '../lib/gsap';
+import { coreGsap } from '../lib/gsap';
 import { hasFinePointer } from '../lib/device';
 import { motionAllowed, usePrefs } from '../lib/prefs';
 
@@ -21,7 +21,7 @@ export function Cursor() {
 
   useEffect(() => {
     if (!on || !ring.current || !dot.current || !root.current) return;
-    const { gsap } = ensureGsap();
+    const gsap = coreGsap();
     const html = document.documentElement;
     html.classList.add('cursor-on');
     const el = root.current;

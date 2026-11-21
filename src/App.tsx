@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useRef } from 'react';
 import { RouterProvider, useRouter } from './lib/router';
 import { motionAllowed, setPref, usePrefs } from './lib/prefs';
 import { readLocal } from './lib/storage';
-import { ensureGsap } from './lib/gsap';
+import { coreGsap, primeScrollKit, scrollKit } from './lib/gsap';
 import { hasFinePointer } from './lib/device';
 import { scrollTo, startSmooth, stopSmooth } from './lib/smooth';
 import { closeOverlay, getOverlay, openOverlay, triggerUnlock, useOverlay, useUnlock } from './lib/ui';
@@ -79,15 +79,15 @@ function Shell() {
     };
   }, []);
 
-  // Route changes: scroll position, focus, meta, ScrollTrigger refresh.
+  // Route changes: scroll position, focus, meta, ScrollTrigger refresh (once the lazy scroll kit is in).
   const firstRun = useRef(true);
   useEffect(() => {
-    const { ScrollTrigger } = ensureGsap();
+    const refreshTriggers = () => scrollKit()?.ScrollTrigger.refresh();
     const hash = window.location.hash.slice(1);
     if (firstRun.current) {
       firstRun.current = false;
       const refresh = () => {
-        ScrollTrigger.refresh();
+        refreshTriggers();
         if (hash) scrollTo(hash, { immediate: true });
       };
       void (document.fonts?.ready ?? Promise.resolve()).then(() => requestAnimationFrame(refresh));
@@ -97,7 +97,7 @@ function Shell() {
     applyMeta(path);
     const state = window.history.state as { scrollY?: number } | null;
     requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
+      refreshTriggers();
       if (kind === 'pop' && typeof state?.scrollY === 'number') scrollTo(state.scrollY, { immediate: true });
       else if (hash) scrollTo(hash, { immediate: true });
       else scrollTo(0, { immediate: true });
@@ -106,37 +106,47 @@ function Shell() {
   }, [seq, path, kind]);
 
   // Scroll velocity → variable-font weight on display headings and a slight skew on cards.
+  // Waits for the lazy scroll kit; nothing to do before the first scroll anyway.
   useEffect(() => {
     if (!motionOk) return;
-    const { gsap, ScrollTrigger } = ensureGsap();
-    let v = 0;
-    let cur = 0;
-    let applied = 0;
-    const st = ScrollTrigger.create({
-      start: 0,
-      end: 'max',
-      onUpdate: (self) => {
-        v = gsap.utils.clamp(-1, 1, self.getVelocity() / 2600);
-      },
-    });
-    const tick = () => {
-      cur += (v - cur) * 0.14;
-      v *= 0.9;
-      if (Math.abs(cur) < 0.002) cur = 0;
-      if (cur === applied) return;
-      applied = cur;
-      const w = String(Math.round(-Math.abs(cur) * 360));
-      document.querySelectorAll<HTMLElement>('[data-vel]').forEach((el) => el.style.setProperty('--vel-wght', w));
-      document.querySelectorAll<HTMLElement>('[data-skew]').forEach((el) => {
-        el.style.transform = cur ? `skewY(${(cur * 2.4).toFixed(3)}deg)` : '';
+    let alive = true;
+    let dispose: (() => void) | undefined;
+    void primeScrollKit().then(({ ScrollTrigger }) => {
+      if (!alive) return;
+      const gsap = coreGsap();
+      let v = 0;
+      let cur = 0;
+      let applied = 0;
+      const st = ScrollTrigger.create({
+        start: 0,
+        end: 'max',
+        onUpdate: (self) => {
+          v = gsap.utils.clamp(-1, 1, self.getVelocity() / 2600);
+        },
       });
-    };
-    gsap.ticker.add(tick);
+      const tick = () => {
+        cur += (v - cur) * 0.14;
+        v *= 0.9;
+        if (Math.abs(cur) < 0.002) cur = 0;
+        if (cur === applied) return;
+        applied = cur;
+        const w = String(Math.round(-Math.abs(cur) * 360));
+        document.querySelectorAll<HTMLElement>('[data-vel]').forEach((el) => el.style.setProperty('--vel-wght', w));
+        document.querySelectorAll<HTMLElement>('[data-skew]').forEach((el) => {
+          el.style.transform = cur ? `skewY(${(cur * 2.4).toFixed(3)}deg)` : '';
+        });
+      };
+      gsap.ticker.add(tick);
+      dispose = () => {
+        gsap.ticker.remove(tick);
+        st.kill();
+        document.querySelectorAll<HTMLElement>('[data-vel]').forEach((el) => el.style.removeProperty('--vel-wght'));
+        document.querySelectorAll<HTMLElement>('[data-skew]').forEach((el) => (el.style.transform = ''));
+      };
+    });
     return () => {
-      gsap.ticker.remove(tick);
-      st.kill();
-      document.querySelectorAll<HTMLElement>('[data-vel]').forEach((el) => el.style.removeProperty('--vel-wght'));
-      document.querySelectorAll<HTMLElement>('[data-skew]').forEach((el) => (el.style.transform = ''));
+      alive = false;
+      dispose?.();
     };
   }, [motionOk, seq]);
 

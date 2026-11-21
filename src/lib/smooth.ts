@@ -1,26 +1,35 @@
 // Lenis smooth scroll, driven by the GSAP ticker so ScrollTrigger stays in sync.
 // Only on fine pointers with full motion and outside recruiter mode (see App).
-import Lenis from 'lenis';
-import { gsap, ScrollTrigger } from './gsap';
+// Lenis ships in the lazy scroll kit, so smooth scrolling starts once the kit is primed (idle or first input);
+// until then the browser's native scrolling is used.
+import type Lenis from 'lenis';
+import { coreGsap, primeScrollKit } from './gsap';
 import { getPrefs } from './prefs';
 
 let lenis: Lenis | null = null;
+let wanted = false;
 
 function raf(time: number) {
   lenis?.raf(time * 1000);
 }
 
 export function startSmooth(): void {
+  wanted = true;
   if (lenis) return;
-  lenis = new Lenis({ lerp: 0.11, smoothWheel: true, wheelMultiplier: 0.95 });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add(raf);
-  gsap.ticker.lagSmoothing(0);
+  void primeScrollKit().then((kit) => {
+    if (!wanted || lenis) return;
+    const gsap = coreGsap();
+    lenis = new kit.Lenis({ lerp: 0.11, smoothWheel: true, wheelMultiplier: 0.95 });
+    lenis.on('scroll', kit.ScrollTrigger.update);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+  });
 }
 
 export function stopSmooth(): void {
+  wanted = false;
   if (!lenis) return;
-  gsap.ticker.remove(raf);
+  coreGsap().ticker.remove(raf);
   lenis.destroy();
   lenis = null;
 }

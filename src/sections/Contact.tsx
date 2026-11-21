@@ -22,7 +22,7 @@ export function Contact() {
   const ref = useRef<HTMLElement>(null);
   const prefs = usePrefs();
   const time = useIstClock();
-  useGsap(ref, () => revealIn(ref.current), [prefs.motion], { defer: true });
+  useGsap(ref, (late) => revealIn(ref.current, late), [prefs.motion], { defer: true });
 
   return (
     <section className="section contact" id="contact" ref={ref} aria-labelledby="contact-title">

@@ -1,5 +1,5 @@
 // Route transitions: a curtain wipe between pages, and a GSAP Flip hand-off from a work card to its case study.
-import { ensureGsap } from './gsap';
+import { coreGsap, scrollKit } from './gsap';
 import { motionAllowed } from './prefs';
 import { sfx } from './audio';
 
@@ -12,8 +12,9 @@ export function captureFlip(el: Element | null): void {
   if (!el || !motionAllowed()) return;
   const id = el.getAttribute('data-flip-id');
   if (!id) return;
-  const { Flip } = ensureGsap();
-  pendingFlip = { id, state: Flip.getState(el) };
+  const kit = scrollKit();
+  if (!kit) return; // scroll kit not loaded yet: navigate without the hand-off
+  pendingFlip = { id, state: kit.Flip.getState(el) };
 }
 
 export function takeFlip(id: string): FlipState | null {
@@ -40,7 +41,7 @@ export function pageTransition(go: () => void, label = ''): void {
     return;
   }
   busy = true;
-  const { gsap } = ensureGsap();
+  const gsap = coreGsap();
   const text = el.querySelector<HTMLElement>('.curtain__label');
   if (text) text.textContent = label;
   sfx('open');

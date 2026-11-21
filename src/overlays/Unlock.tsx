@@ -1,7 +1,7 @@
 // Hidden unlock moment (see CLAUDE.md for the triggers). Lazy chunk; original art only (two SVG strokes).
 // Never rendered in recruiter mode; the accent it unlocks lives in memory and resets on reload.
 import { useEffect, useRef, useState } from 'react';
-import { ensureGsap } from '../lib/gsap';
+import { coreGsap } from '../lib/gsap';
 import { getPrefs, setPref } from '../lib/prefs';
 import { sfx } from '../lib/audio';
 import { showToast } from '../lib/ui';
@@ -23,7 +23,7 @@ export default function Unlock({ run }: { run: number }) {
     setPref('secret', true);
     const el = ref.current;
     if (!el) return;
-    const { gsap } = ensureGsap();
+    const gsap = coreGsap();
     const reduced = getPrefs().motion === 'reduced';
     const slashes = el.querySelectorAll<SVGPathElement>('.slash');
     slashes.forEach((s) => {

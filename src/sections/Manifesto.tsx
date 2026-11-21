@@ -7,7 +7,7 @@ import { usePrefs } from '../lib/prefs';
 export function Manifesto() {
   const ref = useRef<HTMLElement>(null);
   const prefs = usePrefs();
-  useGsap(ref, () => revealIn(ref.current), [prefs.motion], { defer: true });
+  useGsap(ref, (late) => revealIn(ref.current, late), [prefs.motion], { defer: true });
   return (
     <section className="section manifesto" id="about" ref={ref} aria-labelledby="about-title">
       <div className="wrap manifesto__grid">

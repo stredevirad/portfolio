@@ -3,7 +3,7 @@ import { site } from '../content/site';
 import { evidenceGraph, rng } from '../webgl/layout';
 import { motionAllowed, usePrefs } from '../lib/prefs';
 import { fpsProbe, hasFinePointer, isLowEnd, webglAvailable, whenIdle } from '../lib/device';
-import { ensureGsap } from '../lib/gsap';
+import { coreGsap } from '../lib/gsap';
 import { withBase } from '../lib/base';
 import { copyText } from '../lib/clipboard';
 import { Link } from '../lib/router';
@@ -104,7 +104,7 @@ export function Hero() {
   useEffect(() => {
     const html = document.documentElement;
     if (!html.hasAttribute('data-preload') || !section.current) return;
-    const { gsap } = ensureGsap();
+    const gsap = coreGsap();
     const items = section.current.querySelectorAll('[data-intro]');
     gsap.set(items, { autoAlpha: 0, y: 28 });
     const go = () => gsap.to(items, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: 0.07, delay: 0.25 });

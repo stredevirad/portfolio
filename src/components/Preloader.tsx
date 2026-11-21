@@ -3,7 +3,7 @@
 // (it is the LCP element and is never hidden): the counter runs while the name's weight resolves from thin to bold,
 // then the curtain lifts and the name is already in place — a shared-element hand-off with no second copy.
 import { useEffect, useRef } from 'react';
-import { ensureGsap } from '../lib/gsap';
+import { coreGsap } from '../lib/gsap';
 import { motion } from '../design/tokens';
 import { writeSession } from '../lib/storage';
 import { sfx } from '../lib/audio';
@@ -17,7 +17,7 @@ export function Preloader() {
     writeSession('visited', '1');
     const html = document.documentElement;
     if (!html.hasAttribute('data-preload') || !root.current) return;
-    const { gsap } = ensureGsap();
+    const gsap = coreGsap();
     const name = document.querySelector<HTMLElement>('.hero__name');
     const state = { p: 0 };
     const fontsReady = document.fonts?.ready ?? Promise.resolve();

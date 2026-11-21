@@ -4,7 +4,7 @@ import type { FilterId } from '../content/projects';
 import type { Project } from '../content/types';
 import { Link } from '../lib/router';
 import { useGsap, useIsoLayoutEffect } from '../lib/hooks';
-import { ensureGsap } from '../lib/gsap';
+import { ensureGsap, scrollKit } from '../lib/gsap';
 import { revealIn } from '../lib/anim';
 import { motionAllowed, usePrefs } from '../lib/prefs';
 import { sfx } from '../lib/audio';
@@ -56,14 +56,14 @@ export function ProjectIndex() {
   const [filter, setFilter] = useState<FilterId>('all');
   const flip = useRef<FlipState | null>(null);
 
-  useGsap(ref, () => revealIn(ref.current), [prefs.motion], { defer: true });
+  useGsap(ref, (late) => revealIn(ref.current, late), [prefs.motion], { defer: true });
 
   const choose = (f: FilterId) => {
     if (f === filter) return;
     sfx('tick');
-    if (motionAllowed() && list.current) {
-      const { Flip } = ensureGsap();
-      flip.current = Flip.getState(list.current.querySelectorAll('.pitem'));
+    const kit = scrollKit();
+    if (motionAllowed() && list.current && kit) {
+      flip.current = kit.Flip.getState(list.current.querySelectorAll('.pitem'));
     }
     setFilter(f);
   };
