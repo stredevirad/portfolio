@@ -64,3 +64,19 @@ Brief: `JHJportfolio_MASTERPROMPT.md` (git-ignored: private brief, not published
 - `docs/PORTFOLIO_FACTS.md` stays the single source of truth; `docs/OPEN_QUESTIONS.md` lists 15 items for Joshua.
 - Project memory saved in Claude Code's project memory (`~/.claude/projects/-mnt-d-JHJportfolio/memory/`), not the global file.
 - Next (optional): answer OPEN_QUESTIONS, pin the repo, update resume/LinkedIn links to the live URL.
+
+## Perf follow-up — lazy scroll kit ✅ (2026-11-21)
+- ScrollTrigger, SplitText, Flip and Lenis moved into a lazy chunk (`src/lib/gsap-scroll.ts`, 33.5 KB gzip); GSAP core
+  stays eager. Initial JS 161.3 → 129.1 KB gzip. `useGsap(fn(late))` waits for the kit; late setups never hide content
+  already on screen. Commits `8b57d31`, `d39352a`.
+- First version (`8b57d31`) primed the kit on idle and, in a controlled local A/B, pushed LCP from 0.9 s to 1.4 s in 2 of
+  3 runs (ScrollTrigger registration forced a full-page layout during the preloader). `d39352a` primes it after the
+  preloader → LCP back to 0.9 s.
+- Local A/B (same machine, alternating): Performance median 98 → 98, TBT median 126 → 134 ms (noise), Speed Index
+  3.56 → 3.07 s (~14 % better).
+- Production after (median of 3 mobile runs): / 98/100/100/100 (TBT 150 ms, LCP 1.2 s), /work/aegis/ 100/100/100/100,
+  /resume/ 100/100/100/100. Before (single run): / 95, /work/aegis/ 99, /resume/ 100. All runs in
+  `docs/lighthouse/RUNS-2026-11-21.md`. Playwright: 40/40 locally and 40/40 against production.
+- Lesson: compare Lighthouse runs only at a similar `benchmarkIndex` (one run at 903 vs ~2,700 scored home 71) and A/B
+  locally before trusting a single production number.
+- Next: the remaining home TBT is style/layout work from the large DOM, not JS size — see RUNS file.

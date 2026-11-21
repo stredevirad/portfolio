@@ -83,7 +83,9 @@ docs/                      facts, open questions, architecture, ADRs, design res
 
 ## Performance budget (enforced in CI)
 
-Initial JS ≤ 200 KB gzip (currently ~161 KB); three.js is a lazy chunk, loaded only after idle (fine pointers) or first
+Initial JS ≤ 200 KB gzip (currently ~129 KB). The scroll kit (ScrollTrigger, SplitText, Flip, Lenis; 33.5 KB) is a lazy
+chunk primed on first input or idle (after the preloader) — use `coreGsap()` for first-paint animation and `useGsap()` for
+anything scroll-driven; never call `ensureGsap()` outside a `useGsap` callback. three.js is a lazy chunk, loaded only after idle (fine pointers) or first
 interaction (touch), and only if WebGL + capability check + FPS probe pass. DPR ≤ 1.5; loop pauses offscreen/hidden.
 Targets: LCP < 2.5 s, CLS < 0.05 (mobile). Lighthouse mobile: Perf ≥ 90, A11y ≥ 95, BP ≥ 95, SEO 100.
 

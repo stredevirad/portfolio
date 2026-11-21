@@ -72,11 +72,16 @@ Files: `site.ts` (identity, links, positioning), `projects.ts`, `experience.ts`,
 
 ## 4. Animation orchestration
 
-- `src/lib/gsap.ts` registers ScrollTrigger, SplitText, Flip once (client only).
+- `src/lib/gsap.ts`: GSAP core is eager (`coreGsap()`: preloader, hero intro, cursor, curtain). The **scroll kit**
+  (ScrollTrigger, SplitText, Flip, Lenis — `src/lib/gsap-scroll.ts`) is a lazy chunk, primed on the first input or on
+  idle — after the preloader on a first visit, because registering ScrollTrigger forces a full-page layout that must not
+  land while the hero name (LCP) settles. `ensureGsap()` is only valid once the kit is loaded (inside `useGsap`).
 - Each section owns **one `gsap.context()`** created in `useGsap(scopeRef, fn, deps)` and reverted on unmount.
+  `fn(late)` runs once the kit is in; `late = true` means the page was already painted, so `revealIn(scope, late)` and
+  the counters/diagram leave on-screen content alone (no hide-then-reveal flash).
 - `src/lib/smooth.ts` owns Lenis; Lenis drives `ScrollTrigger.update` via `gsap.ticker`. Disabled when motion is
   reduced, in recruiter mode, and on touch devices (native scroll is better there).
-- `ScrollTrigger.refresh()` after `document.fonts.ready` and after hero/images load.
+- `ScrollTrigger.refresh()` after `document.fonts.ready` / load (if the kit is in) and after late section setups.
 - Motion tokens (`src/design/tokens.ts`): durations `xs 0.2 / s 0.4 / m 0.7 / l 1.1 / xl 1.6 s`, eases
   `out: expo.out`, `inOut: power3.inOut`, `snap: back.out(1.4)`, stagger `chars 0.018 / lines 0.08 / cards 0.12`.
 - Reduced motion (OS or toggle): no preloader, no Lenis, no pinning, no WebGL (static SVG), counters render final
